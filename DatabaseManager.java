@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * <h1>Database Manager</h1>
@@ -24,21 +25,23 @@ public class DatabaseManager {
     public static ArrayList<Vehicle> loadVehicles(File file) {
         //TODO
         ArrayList<Vehicle> automobiles = new ArrayList<Vehicle>();
+        Scanner scan;
         try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+//            FileReader fr = new FileReader(file);
+//            BufferedReader br = new BufferedReader(fr);
+            scan = new Scanner(file);
             String temp;
-            while (br.readLine() != null) {
-                temp = br.readLine();
+            while (scan.hasNextLine()) {
+                temp = scan.nextLine();
                 String[] vehicleInfo = temp.split(",");
                 if (vehicleInfo[0].equals("Truck")) {
-                    Vehicle truck = new Vehicle(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
+                    Vehicle truck = new Truck(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
                     automobiles.add(truck);
                 } else if (vehicleInfo[0].equals("Drone")) {
-                    Vehicle drone = new Vehicle(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
+                    Vehicle drone = new Drone(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
                     automobiles.add(drone);
                 } else if (vehicleInfo[0].equals("Cargo Plane")) {
-                    Vehicle cargoPlane = new Vehicle(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
+                    Vehicle cargoPlane = new CargoPlane(vehicleInfo[1], Double.parseDouble(vehicleInfo[2]));
                     automobiles.add(cargoPlane);
                 }
             }
@@ -75,12 +78,14 @@ public class DatabaseManager {
     public static ArrayList<Package> loadPackages(File file) {
         //TODO
         ArrayList<Package> shipment = new ArrayList<Package>();
+        Scanner scan;
         try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
+//            FileReader fr = new FileReader(file);
+////            BufferedReader br = new BufferedReader(fr);
+            scan = new Scanner(file);
             String temp;
-            while (br.readLine() != null) {
-                temp = br.readLine();
+            while (scan.hasNextLine()) {
+                temp = scan.nextLine();
                 String[] packageInfo = temp.split(",");
                 Package pack = new Package(packageInfo[0], packageInfo[1], Double.parseDouble(packageInfo[2]), Double.parseDouble(packageInfo[3]) , new ShippingAddress(packageInfo[4], packageInfo[5], packageInfo[6], packageInfo[7], Integer.parseInt(packageInfo[8])));
                 shipment.add(pack);
@@ -186,15 +191,22 @@ public class DatabaseManager {
     public static void saveVehicles(File file, ArrayList<Vehicle> vehicles) {
         //TODO
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-            for (int i = 0; i < vehicles.size() ; i++) {
-                String writing = vehicles.get(i) + "," + vehicles.get(i).getLicensePlate() + "," + vehicles.get(i).getMaxWeight();
-                bw.write(writing);
-                bw.newLine();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (Vehicle v : vehicles) {
+                if (v instanceof Truck) {
+                    bw.write("Truck,");
+                }
+                if (v instanceof CargoPlane) {
+                    bw.write("Cargo Plane,");
+                }
+                if (v instanceof Drone) {
+                    bw.write("Drone,");
+                }
+                bw.write(v.getLicensePlate() + ",");
+                bw.write(Double.toString(v.getMaxWeight()) + "\n");
             }
-        } catch (Exception e) {
-            System.out.print("");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
