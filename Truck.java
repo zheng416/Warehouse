@@ -1,4 +1,6 @@
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -51,11 +53,12 @@ public class Truck extends Vehicle {
      */
     @Override
     public double getProfit() {
+        NumberFormat numberFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
         double p = 0;
         for (int i = 0;i< getPackages().size();i++) {
             p += getPackages().get(i).getPrice();
         }
-        return p - GAS_RATE * range;
+        return Double.parseDouble(numberFormatter.format( p - GAS_RATE * range));
     }
 
     /**

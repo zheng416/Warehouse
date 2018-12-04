@@ -233,8 +233,7 @@ public class DatabaseManager {
      */
     public static void savePackages(File file, ArrayList<Package> packages) {
         //TODO
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             for (int i = 0; i < packages.size() ; i++) {
                 String writing = packages.get(i).getID() + "," + packages.get(i).getProduct() + "," +
                         packages.get(i).getWeight() + "," + packages.get(i).getPrice() + "," +
@@ -262,8 +261,7 @@ public class DatabaseManager {
     public static void saveProfit(File file, double profit) {
         //TODO
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 
                 String writing = Double.toString(profit);
                 bw.write(writing);
@@ -287,8 +285,7 @@ public class DatabaseManager {
 
     public static void savePackagesShipped(File file, int nPackages) {
         //TODO
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 
             String writing = Integer.toString(nPackages);
             bw.write(writing);
@@ -315,8 +312,7 @@ public class DatabaseManager {
     public static void savePrimeDay(File file, boolean primeDay) {
         //TODO
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 
             int num;
             if (primeDay) {
