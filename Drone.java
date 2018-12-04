@@ -75,16 +75,26 @@ public class Drone extends Vehicle {
      */
     @Override
     public String report() {
-        return "==========Drone Report==========\n" +
-                "License Plate No.: " + getLicensePlate() + "\n" +
-                "Destination: " + getZipDest() + "\n" +
-                "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                "Net Profit: $" + getProfit() + "\n" +
-                "==============================" + "\n" + super.report();
+        if (getProfit() < 0) {
+            return "==========Drone Report==========\n" +
+                    "License Plate No.: " + getLicensePlate() + "\n" +
+                    "Destination: " + getZipDest() + "\n" +
+                    "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
+                    "Net Profit: ($" + getProfit() + ")\n" +
+                    "==============================" + "\n" + super.report();
+        } else {
+            return "==========Drone Report==========\n" +
+                    "License Plate No.: " + getLicensePlate() + "\n" +
+                    "Destination: " + getZipDest() + "\n" +
+                    "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
+                    "Net Profit: $" + getProfit() + "\n" +
+                    "==============================" + "\n" + super.report();
+        }
     }
     public void fill(ArrayList<Package> warehousePackages) {
         for (int i = 0; i < warehousePackages.size(); i++) {
             if (warehousePackages.get(i).distance(getZipDest()) <= range) {
+                range++;
                 addPackage(warehousePackages.get(i));
             }
         }

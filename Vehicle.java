@@ -197,6 +197,7 @@ public class Vehicle implements Profitable {
         */
         for (int i = 0; i < warehousePackages.size(); i++) {
             if (warehousePackages.get(i).distance(zipDest) <= range) {
+                range++;
                 addPackage(warehousePackages.get(i));
             }
         }

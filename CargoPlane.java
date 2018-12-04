@@ -48,6 +48,7 @@ public class CargoPlane extends Vehicle {
     public void fill(ArrayList<Package> warehousePackages) {
         for (int i = 0; i < warehousePackages.size(); i++) {
             if (warehousePackages.get(i).distance(getZipDest()) <= range) {
+                range += 10;
                 addPackage(warehousePackages.get(i));
             }
         }
@@ -90,12 +91,21 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public String report() {
-        return "==========Cargo Plane Report==========\n" +
-                "License Plate No.: " + getLicensePlate() + "\n" +
-                "Destination: " + getZipDest() + "\n" +
-                "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                "Net Profit: $" + getProfit() + "\n" +
-                "==============================" + "\n" + super.report();
+        if (getProfit() < 0) {
+            return "==========Cargo Plane Report==========\n" +
+                    "License Plate No.: " + getLicensePlate() + "\n" +
+                    "Destination: " + getZipDest() + "\n" +
+                    "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
+                    "Net Profit: ($" + getProfit() + ")\n" +
+                    "==============================" + "\n" + super.report();
+        } else {
+            return "==========Cargo Plane Report==========\n" +
+                    "License Plate No.: " + getLicensePlate() + "\n" +
+                    "Destination: " + getZipDest() + "\n" +
+                    "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
+                    "Net Profit: $" + getProfit() + "\n" +
+                    "==============================" + "\n" + super.report();
+        }
     }
 
 
