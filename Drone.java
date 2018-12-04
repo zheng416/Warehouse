@@ -57,7 +57,7 @@ public class Drone extends Vehicle {
      */
     @Override
     public double getProfit() {
-        double p;
+        double p = 0.0;
         for (int i = 0;i< packages.size();i++) {
             p += packages.get(i).getPrice();
         }
