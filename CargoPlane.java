@@ -6,32 +6,40 @@ import java.util.ArrayList;
  */
 public class CargoPlane extends Vehicle {
     final double GAS_RATE = 2.33;
+    private String licensePlate;
+    private double maxWeight;
+    private double currentWeight;
+    private int zipDest;
+    private ArrayList<Package> packages;
+    private int range = 10;
 
     /**
      * Default Constructor
      */
     //============================================================================
-    //TODO
-
     public CargoPlane() {
-        super();
+        this.licensePlate = "";
+        this.maxWeight = 0;
+        this.currentWeight = 0;
+        this.zipDest = 0;
+        this.packages = new ArrayList<>();
     }
-    
+
     //============================================================================
 
     /**
      * Constructor
      *
-     * @param licensePlate license plate of vehicle
-     * @param maxWeight    maximum weight that the vehicle can hold
+     * @param licensePlate1 license plate of vehicle
+     * @param maxWeight1    maximum weight that the vehicle can hold
      */
     //============================================================================
-    //TODO
-
-    public CargoPlane(String licensePlate, double maxWeight) {
-        super(licensePlate, maxWeight);
+    public CargoPlane(String licensePlate1, double maxWeight1) {
+        this();
+        this.licensePlate = licensePlate1;
+        this.maxWeight = maxWeight1;
     }
-    
+
     //============================================================================
 
     /**
@@ -42,8 +50,12 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public void fill(ArrayList<Package> warehousePackages) {
-    	//TODO
-        
+        for (int i = 0; i < warehousePackages.size(); i++) {
+            if (warehousePackages.get(i).distance(zipDest) <= range) {
+                addPackage(warehousePackages.get(i));
+            }
+        }
+
     }
 
     /*
@@ -60,8 +72,11 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public double getProfit() {
-    	//TODO
-        
+        double p = 0;
+        for (int i = 0;i< packages.size();i++) {
+            p += packages.get(i).getPrice();
+        }
+        return p - GAS_RATE * range;
     }
 
     /**
@@ -78,10 +93,15 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public String report() {
-    	//TODO
-       
+        return "==========Cargo Plane Report==========\n" +
+                "License Plate No.: " + licensePlate + "\n" +
+                "Destination: " + zipDest + "\n" +
+                "Weight Load: " + currentWeight + "/" + maxWeight + "\n" +
+                "Net Profit: $" + getProfit() + "\n" +
+                "==============================" + "\n" + super.report();
     }
 
-   
-   
+
+
+
 }
