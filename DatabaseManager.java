@@ -6,6 +6,10 @@ import java.util.Scanner;
  * <h1>Database Manager</h1>
  *
  * Used to locally save and retrieve data.
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 public class DatabaseManager {
 
@@ -23,7 +27,7 @@ public class DatabaseManager {
      * @return ArrayList of vehicles
      */
     public static ArrayList<Vehicle> loadVehicles(File file) {
-        //TODO
+
         ArrayList<Vehicle> automobiles = new ArrayList<Vehicle>();
         Scanner scan;
         try {
@@ -76,7 +80,7 @@ public class DatabaseManager {
      * @return ArrayList of packages
      */
     public static ArrayList<Package> loadPackages(File file) {
-        //TODO
+
         ArrayList<Package> shipment = new ArrayList<Package>();
         Scanner scan;
         try {
@@ -87,7 +91,9 @@ public class DatabaseManager {
             while (scan.hasNextLine()) {
                 temp = scan.nextLine();
                 String[] packageInfo = temp.split(",");
-                Package pack = new Package(packageInfo[0], packageInfo[1], Double.parseDouble(packageInfo[2]), Double.parseDouble(packageInfo[3]) , new ShippingAddress(packageInfo[4], packageInfo[5], packageInfo[6], packageInfo[7], Integer.parseInt(packageInfo[8])));
+                Package pack = new Package(packageInfo[0], packageInfo[1], Double.parseDouble(packageInfo[2]),
+                        Double.parseDouble(packageInfo[3]) , new ShippingAddress(packageInfo[4], packageInfo[5],
+                        packageInfo[6], packageInfo[7], Integer.parseInt(packageInfo[8])));
                 shipment.add(pack);
             }
         } catch (Exception e) {
@@ -109,7 +115,7 @@ public class DatabaseManager {
      * @return profits from file
      */
     public static double loadProfit(File file) {
-        //TODO
+
         String profit;
         try {
             FileReader fr = new FileReader(file);
@@ -133,7 +139,7 @@ public class DatabaseManager {
      * @return number of packages shipped from file
      */
     public static int loadPackagesShipped(File file) {
-        //TODO
+
         String number;
         try {
             FileReader fr = new FileReader(file);
@@ -156,7 +162,7 @@ public class DatabaseManager {
      * @return whether or not it is prime day
      */
     public static boolean loadPrimeDay(File file) {
-        //TODO
+
         String number;
         try {
             FileReader fr = new FileReader(file);
@@ -165,11 +171,7 @@ public class DatabaseManager {
         } catch (Exception e) {
             return false;
         }
-        if (Integer.parseInt(number) == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return Integer.parseInt(number) == 1;
     }
 
 
@@ -189,9 +191,10 @@ public class DatabaseManager {
      * @param vehicles ArrayList of vehicles to save to file
      */
     public static void saveVehicles(File file, ArrayList<Vehicle> vehicles) {
-        //TODO
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             for (Vehicle v : vehicles) {
                 if (v instanceof Truck) {
                     bw.write("Truck,");
@@ -205,6 +208,7 @@ public class DatabaseManager {
                 bw.write(v.getLicensePlate() + ",");
                 bw.write(Double.toString(v.getMaxWeight()) + "\n");
             }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -232,17 +236,20 @@ public class DatabaseManager {
      * @param packages ArrayList of packages to save to file
      */
     public static void savePackages(File file, ArrayList<Package> packages) {
-        //TODO
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             for (int i = 0; i < packages.size() ; i++) {
                 String writing = packages.get(i).getID() + "," + packages.get(i).getProduct() + "," +
                         packages.get(i).getWeight() + "," + packages.get(i).getPrice() + "," +
                         packages.get(i).getDestination().getName() + "," + packages.get(i).getDestination().getAddress()
                         + "," + packages.get(i).getDestination().getCity() + "," +
-                        packages.get(i).getDestination().getState() + "," + packages.get(i).getDestination().getZipCode();
+                        packages.get(i).getDestination().getState() + "," + packages.get(i).getDestination()
+                        .getZipCode();
                 bw.write(writing);
                 bw.newLine();
             }
+            bw.close();
         } catch (Exception e) {
             System.out.print("");
         }
@@ -259,22 +266,15 @@ public class DatabaseManager {
      */
 
     public static void saveProfit(File file, double profit) {
-        //TODO
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-
-                String writing = Double.toString(profit);
-                bw.write(writing);
-                bw.newLine();
-
+            String writing = Double.toString(profit);
+            bw.write(writing);
+            bw.newLine();
         } catch (Exception e) {
             System.out.print("");
         }
     }
-
-
-
-
 
     /**
      * Saves number of packages shipped to text file.
@@ -284,7 +284,7 @@ public class DatabaseManager {
      */
 
     public static void savePackagesShipped(File file, int nPackages) {
-        //TODO
+
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 
             String writing = Integer.toString(nPackages);
@@ -310,7 +310,7 @@ public class DatabaseManager {
      */
 
     public static void savePrimeDay(File file, boolean primeDay) {
-        //TODO
+
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 

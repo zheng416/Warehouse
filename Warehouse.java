@@ -4,15 +4,20 @@ import java.util.Scanner;
 
 /**
  * <h1>Warehouse</h1>
+ *
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 
 public class Warehouse {
-	final static String folderPath = "files/";
-    final static File VEHICLE_FILE = new File(folderPath + "VehicleList.csv");
-    final static File PACKAGE_FILE = new File(folderPath + "PackageList.csv");
-    final static File PROFIT_FILE = new File(folderPath + "Profit.txt");
-    final static File N_PACKAGES_FILE = new File(folderPath + "NumberOfPackages.txt");
-    final static File PRIME_DAY_FILE = new File(folderPath + "PrimeDay.txt");
+	final static String FOLDER_PATH = "files/";
+    final static File VEHICLE_FILE = new File(FOLDER_PATH + "VehicleList.csv");
+    final static File PACKAGE_FILE = new File(FOLDER_PATH + "PackageList.csv");
+    final static File PROFIT_FILE = new File(FOLDER_PATH + "Profit.txt");
+    final static File N_PACKAGES_FILE = new File(FOLDER_PATH + "NumberOfPackages.txt");
+    final static File PRIME_DAY_FILE = new File(FOLDER_PATH + "PrimeDay.txt");
     final static double PRIME_DAY_DISCOUNT = .15;
 
     /**
@@ -21,7 +26,8 @@ public class Warehouse {
      * @param args list of command line arguements
      */
     public static void main(String[] args) {
-    	//TODO
+
+
         ArrayList<Package> packages;
         ArrayList<Vehicle> vehicles;
         double profit;
@@ -43,6 +49,7 @@ public class Warehouse {
         } else {
     	    primeDay = 0;
         }
+
     	
     	
     	//2) Show menu and handle user inputs
@@ -231,11 +238,12 @@ public class Warehouse {
                                         if (input4 == 1) {
                                             for (int i = 0; i < vehicles.size(); i++) {
                                                 if (vehicles.get(i) instanceof Truck) {
-                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination().getZipCode());
+                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination()
+                                                            .getZipCode());
                                                     vehicles.get(i).fill(packages);
                                                     nPackages += vehicles.get(i).getPackages().size();
-                                                    System.out.println(vehicles.get(i).report());
                                                     profit += vehicles.get(i).getProfit();
+                                                    System.out.println(vehicles.get(i).report());
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
@@ -251,14 +259,19 @@ public class Warehouse {
                                             int max = 0;
                                             for (int i = 0; i < packages.size() ; i++) {
                                                 int counts = 0;
-                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares one to second value
-                                                    if (packages.get(i).getDestination().getZipCode() == packages.get(j).getDestination().getZipCode()) {
+                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares
+                                                    // one to second value
+                                                    if (packages.get(i).getDestination().getZipCode() ==
+                                                            packages.get(j).getDestination().getZipCode()) {
                                                         counts++; //matching
                                                     }
                                                 }
-                                                if (counts > max ) { //if matching is more, replace current max with updated max
-                                                    max = counts;    //also same amount won't replace since handout says first occurrence
-                                                    zip = packages.get(i).getDestination().getZipCode(); //and update the zip code
+                                                if (counts > max ) { //if matching is more, replace current max with
+                                                    // updated max
+                                                    max = counts;    //also same amount won't replace since handout
+                                                    // says first occurrence
+                                                    zip = packages.get(i).getDestination().getZipCode(); //and update
+                                                    // the zip code
                                                 }
                                             }
                                             for (int i = 0; i < vehicles.size(); i++) {
@@ -298,7 +311,8 @@ public class Warehouse {
                                         if (input4 == 1) {
                                             for (int i = 0; i < vehicles.size(); i++) {
                                                 if (vehicles.get(i) instanceof Drone) {
-                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination().getZipCode());
+                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination()
+                                                            .getZipCode());
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
                                                     profit += vehicles.get(i).getProfit();
@@ -317,14 +331,19 @@ public class Warehouse {
                                             int max = 0;
                                             for (int i = 0; i < packages.size() ; i++) {
                                                 int counts = 0;
-                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares one to second value
-                                                    if (packages.get(i).getDestination().getZipCode() == packages.get(j).getDestination().getZipCode()) {
+                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares
+                                                    // one to second value
+                                                    if (packages.get(i).getDestination().getZipCode() ==
+                                                            packages.get(j).getDestination().getZipCode()) {
                                                         counts++; //matching
                                                     }
                                                 }
-                                                if (counts > max ) { //if matching is more, replace current max with updated max
-                                                    max = counts;    //also same amount won't replace since handout says first occurrence
-                                                    zip = packages.get(i).getDestination().getZipCode(); //and update the zip code
+                                                if (counts > max ) { //if matching is more, replace current max with
+                                                    // updated max
+                                                    max = counts;    //also same amount won't replace since handout
+                                                    // says first occurrence
+                                                    zip = packages.get(i).getDestination().getZipCode(); //and update
+                                                    // the zip code
                                                 }
                                             }
                                             for (int i = 0; i < vehicles.size(); i++) {
@@ -364,7 +383,8 @@ public class Warehouse {
                                         if (input4 == 1) {
                                             for (int i = 0; i < vehicles.size(); i++) {
                                                 if (vehicles.get(i) instanceof CargoPlane) {
-                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination().getZipCode());
+                                                    vehicles.get(i).setZipDest(packages.get(0).getDestination()
+                                                            .getZipCode());
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
                                                     profit += vehicles.get(i).getProfit();
@@ -383,14 +403,19 @@ public class Warehouse {
                                             int max = 0;
                                             for (int i = 0; i < packages.size() ; i++) {
                                                 int counts = 0;
-                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares one to second value
-                                                    if (packages.get(i).getDestination().getZipCode() == packages.get(j).getDestination().getZipCode()) {
+                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares
+                                                    // one to second value
+                                                    if (packages.get(i).getDestination().getZipCode() ==
+                                                            packages.get(j).getDestination().getZipCode()) {
                                                         counts++; //matching
                                                     }
                                                 }
-                                                if (counts > max ) { //if matching is more, replace current max with updated max
-                                                    max = counts;    //also same amount won't replace since handout says first occurrence
-                                                    zip = packages.get(i).getDestination().getZipCode(); //and update the zip code
+                                                if (counts > max ) { //if matching is more, replace current max with
+                                                    // updated max
+                                                    max = counts;    //also same amount won't replace since handout
+                                                    // says first occurrence
+                                                    zip = packages.get(i).getDestination().getZipCode(); //and update
+                                                    // the zip code
                                                 }
                                             }
                                             for (int i = 0; i < vehicles.size(); i++) {
@@ -438,14 +463,19 @@ public class Warehouse {
                                             int max = 0;
                                             for (int i = 0; i < packages.size() ; i++) {
                                                 int counts = 0;
-                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares one to second value
-                                                    if (packages.get(i).getDestination().getZipCode() == packages.get(j).getDestination().getZipCode()) {
+                                                for (int j = 0; j < packages.size() ; j++) { //double loops compares
+                                                    // one to second value
+                                                    if (packages.get(i).getDestination().getZipCode() ==
+                                                            packages.get(j).getDestination().getZipCode()) {
                                                         counts++; //matching
                                                     }
                                                 }
-                                                if (counts > max ) { //if matching is more, replace current max with updated max
-                                                    max = counts;    //also same amount won't replace since handout says first occurrence
-                                                    zip = packages.get(i).getDestination().getZipCode(); //and update the zip code
+                                                if (counts > max ) { //if matching is more, replace current max with
+                                                    // updated max
+                                                    max = counts;    //also same amount won't replace since handout
+                                                    // says first occurrence
+                                                    zip = packages.get(i).getDestination().getZipCode(); //and update
+                                                    // the zip code
                                                 }
                                             }
                                             vehicles.get(0).setZipDest(zip);
@@ -459,7 +489,7 @@ public class Warehouse {
                                             packagesWarehouse--;
                                             flag3 = false;
                                         } //End Zip
-                                    }// Ends Option 4
+                                    } // Ends Option 4
                                 }
                             }
                         }
@@ -467,11 +497,12 @@ public class Warehouse {
 
                     break;
                 case 5:
-                    System.out.printf("==========Statistics===========\n" +
-                            "Profits: $%16c%.2f\n" +
-                            "Packages Shipped: %13d\n" +
-                            "Packages in Warehouse: %8d\n" +
-                            "==============================\n", '$', profit, nPackages, packagesWarehouse);
+//                    System.out.printf("==========Statistics===========\n" +
+//                            "Profits: $%16c%.2f\n" +
+//                            "Packages Shipped: %13d\n" +
+//                            "Packages in Warehouse: %8d\n" +
+//                            "==============================\n", '$', profit, nPackages, packagesWarehouse);
+                    printStatisticsReport(profit, nPackages, packagesWarehouse);
                     break;
                 case 6:
                     DatabaseManager.saveVehicles(VEHICLE_FILE, vehicles);
@@ -485,9 +516,18 @@ public class Warehouse {
         }
     	
     	
-    	//3) save data (vehicle, packages, profits, packages shipped and primeday) to files (overwriting them) using DatabaseManager
+    	//3) save data (vehicle, packages, profits, packages shipped and primeday) to files (overwriting them) using
+        // DatabaseManager
     	
     
+    }
+
+    public static void printStatisticsReport(double profit, int packagesShipped, int size) {
+        System.out.printf("==========Statistics===========\n" +
+                "Profits: $%16c%.2f\n" +
+                "Packages Shipped: %13d\n" +
+                "Packages in Warehouse: %8d\n" +
+                "==============================\n", '$', profit, packagesShipped, size);
     }
 
 

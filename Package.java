@@ -1,5 +1,9 @@
 /**
  * <h1>Package</h1> Represents a package
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 public class Package {
     private String id;
@@ -12,7 +16,7 @@ public class Package {
      * Default Constructor
      */
     //============================================================================
-    //TODO
+
     public Package() {
         this.id = "";
         this.product = "";
@@ -33,7 +37,7 @@ public class Package {
      * @param destination1 the destination of the package
      */
     //============================================================================
-    //TODO
+
     public Package(String id1, String product1, double weight1, double price1, ShippingAddress destination1) {
         this.id = id1;
         this.product = product1;
@@ -47,7 +51,7 @@ public class Package {
      * @return id of package
      */
     public String getID() {
-        //TODO
+
         return this.id;
     }
 
@@ -56,7 +60,7 @@ public class Package {
      * @return Name of product in package
      */
     public String getProduct() {
-        //TODO
+
         return this.product;
     }
 
@@ -65,7 +69,7 @@ public class Package {
      * @param product the product name to set
      */
     public void setProduct(String product) {
-        //TODO
+
         this.product = product;
     }
 
@@ -74,7 +78,7 @@ public class Package {
      * @return price of product in package
      */
     public double getPrice() {
-        //TODO
+
         return this.price;
     }
 
@@ -83,7 +87,7 @@ public class Package {
      * @param price1 the price to set
      */
     public void setPrice(double price1) {
-        //TODO
+
         if (price1 < 0) {
             this.price = 0;
         } else {
@@ -140,13 +144,19 @@ public class Package {
 //                "Price:        $" + price + "\n" +
 //                "Product:" + product + "\n" +
 //                "====================";
-        return String.format("====================\nTO: %s\n%s\n%s, %s, %d\nWeight: %12.2f\nPrice: %8c%.2f\nProduct: " + getProduct() +
-                "\n====================", destination.getName(), destination.getAddress(), destination.getCity(),
-                destination.getState(), destination.getZipCode(), getWeight(), '$' , getPrice());
+        return String.format("====================\nTO: %s\n%s\n%s, %s, %d\nWeight: %12.2f\nPrice: %8c%.2f\nProduct:"
+                        + getProduct() + "\n====================", destination.getName(), destination.getAddress(),
+                        destination.getCity(), destination.getState(), destination.getZipCode(), getWeight(), '$' ,
+                        getPrice());
     }
 
+    /**
+     *
+     * @param d ZipCode
+     * @return Distance between ZipCodes.
+     */
     public int distance(int d) {
-        return Math.abs(d- this.destination.getZipCode());
+        return Math.abs(d - this.destination.getZipCode());
     }
 
 }

@@ -5,9 +5,13 @@ import java.util.Locale;
 
 /**
  * <h1>CargoPlane</h1> Represents a Cargo Plane
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 public class CargoPlane extends Vehicle {
-    final double GAS_RATE = 2.33;
+    final double gasRate = 2.33;
 //    private String licensePlate;
 //    private double maxWeight;
 //    private double currentWeight;
@@ -48,8 +52,9 @@ public class CargoPlane extends Vehicle {
     public void fill(ArrayList<Package> warehousePackages) {
         for (int i = 0; i < warehousePackages.size(); i++) {
             if (warehousePackages.get(i).distance(getZipDest()) <= range) {
-                range += 10;
-                addPackage(warehousePackages.get(i));
+                if (addPackage(warehousePackages.get(i))) {
+                    range += 10;
+                }
             }
         }
 
@@ -71,10 +76,10 @@ public class CargoPlane extends Vehicle {
     public double getProfit() {
         NumberFormat numberFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
         double p = 0;
-        for (int i = 0;i< getPackages().size();i++) {
+        for (int i = 0; i < getPackages().size(); i++) {
             p += getPackages().get(i).getPrice();
         }
-        return Double.parseDouble(numberFormatter.format(p - GAS_RATE * range));
+        return Double.parseDouble(numberFormatter.format(p - (gasRate * range)));
     }
 
     /**

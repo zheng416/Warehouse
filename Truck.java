@@ -5,6 +5,10 @@ import java.util.Locale;
 
 /**
  * <h1>Truck</h1> Represents a Truck
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 public class Truck extends Vehicle {
 //    private String licensePlate;
@@ -14,7 +18,7 @@ public class Truck extends Vehicle {
 //    private ArrayList<Package> packages;
     private int range = 1;
 
-    private final double GAS_RATE = 1.66;
+    private final double gasRate = 1.66;
 
     /**
      * Default Constructor
@@ -55,10 +59,10 @@ public class Truck extends Vehicle {
     public double getProfit() {
         NumberFormat numberFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
         double p = 0;
-        for (int i = 0;i< getPackages().size();i++) {
+        for (int i = 0; i < getPackages().size(); i++) {
             p += getPackages().get(i).getPrice();
         }
-        return Double.parseDouble(numberFormatter.format( p - GAS_RATE * range));
+        return Double.parseDouble(numberFormatter.format( p - (gasRate * range)));
     }
 
     /**
@@ -91,11 +95,17 @@ public class Truck extends Vehicle {
                     "==============================" + "\n" + super.report();
         }
     }
+
+    /**
+     *
+     * @param warehousePackages List of packages to add from
+     */
     public void fill(ArrayList<Package> warehousePackages) {
         for (int i = 0; i < warehousePackages.size(); i++) {
             if (warehousePackages.get(i).distance(getZipDest()) <= range) {
-                range++;
-                addPackage(warehousePackages.get(i));
+                if (addPackage(warehousePackages.get(i))) {
+                    range++;
+                }
             }
         }
     }

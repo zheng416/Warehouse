@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 /**
  * <h1>Vehicle</h1> Represents a vehicle
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 
 public class Vehicle implements Profitable {
@@ -161,11 +165,7 @@ public class Vehicle implements Profitable {
      * @return whether or not Vehicle is full
      */
     public boolean isFull() {
-        if (this.currentWeight >= this.maxWeight) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.currentWeight >= this.maxWeight;
     }
 
 
@@ -219,13 +219,13 @@ public class Vehicle implements Profitable {
         return s;
     }
 
-    class SortByDistance implements Comparator {
-        public int compare(Object o1, Object o2) {
-            Package s1 = (Package) o1;
-            Package s2 = (Package) o2;
-            if (s1.distance(zipDest) < s2.distance(zipDest))
-                return 1;
-            return 0;
-        }
-    }
+//    class SortByDistance implements Comparator {
+//        public int compare(Object o1, Object o2) {
+//            Package s1 = (Package) o1;
+//            Package s2 = (Package) o2;
+//            if (s1.distance(zipDest) < s2.distance(zipDest))
+//                return 1;
+//            return 0;
+//        }
+//    }
 }

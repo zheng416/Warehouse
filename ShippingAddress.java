@@ -1,5 +1,9 @@
 /**
  * <h1>Shipping Address</h1> Represents a shipping address
+ *
+ * @author Wenxi Zhang & Jacky Zheng
+ *
+ * @version 2018-12-04
  */
 public class ShippingAddress {
     private String name; //e.g. (Lawson Computer Science Building)
