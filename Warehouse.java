@@ -1,5 +1,7 @@
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -42,13 +44,17 @@ public class Warehouse {
     	profit = DatabaseManager.loadProfit(PROFIT_FILE);
     	nPackages = DatabaseManager.loadPackagesShipped(N_PACKAGES_FILE);
     	prime = DatabaseManager.loadPrimeDay(PRIME_DAY_FILE);
+    	profit = 0;
 
-    	int packagesWarehouse = packages.size();
+    	int packagesWarehouse = 0;
     	if (prime) {
     	    primeDay = 1;
         } else {
     	    primeDay = 0;
         }
+
+        boolean space = false;
+    	boolean space2 = false;
 
     	
     	
@@ -81,10 +87,18 @@ public class Warehouse {
         boolean flag = true;
         while (flag) {
             System.out.println(menu);
+            if (space) {
+                System.out.println();
+                space = false;
+            }
+            if (space2) {
+                System.out.println();
+                space2 = false;
+            }
             int input;
             input = scan.nextInt();
             if (input < 1 || input > 6) {
-                System.out.println("Error: Option not available.");
+                System.out.println("Error: Option not available.\n");
             }
             String id;
             String product;
@@ -98,7 +112,7 @@ public class Warehouse {
 
             switch (input) {
                 case 1:
-                    System.out.println("Enter Package ID:");
+                    System.out.println("\nEnter Package ID:");
                     id = scan.next();
                     scan.nextLine();
                     System.out.println("Enter Product Name:");
@@ -111,7 +125,7 @@ public class Warehouse {
                     System.out.println("Enter Buyer Name:");
                     name = scan.nextLine();
                     System.out.println("Enter Address:");
-                    address = scan.nextLine();
+                    address = scan.nextLine() + " ";
                     System.out.println("Enter City:");
                     city = scan.nextLine();
                     System.out.println("Enter State:");
@@ -130,22 +144,25 @@ public class Warehouse {
                     ShippingAddress sA = new ShippingAddress(name, address, city, state, zipCode);
                     Package newPackage = new Package(id, product, weight, Double.parseDouble(priceDiscounted), sA);
                     packages.add(newPackage);
+                    packagesWarehouse++;
 
-                    System.out.println("\n\n" + newPackage.shippingLabel());
+                    System.out.println("\n" + newPackage.shippingLabel());
+                    space = true;
+//                    space2 = true;
                     break;
                 case 2:
                     String licPlate;
                     double maxWeight;
                     boolean flag2 = true;
                     while (flag2) {
-                        System.out.println("Vehicle Options:\n" +
+                        System.out.println("\nVehicle Options:\n" +
                                 "1) Truck\n" +
                                 "2) Drone\n" +
                                 "3) Cargo Plane");
                         int option;
                         option = scan.nextInt();
                         if (option < 1 || option > 3) {
-                            System.out.println("Error: Option not available");
+                            System.out.println("Error: Option not available.");
                         } else {
                             if (option == 1) {
                                 scan.nextLine();
@@ -195,20 +212,21 @@ public class Warehouse {
                         prime = false;
 
                     }
+                    System.out.println();
                     break;
                 case 4:
                     //No Vehicles Available
                     if (vehicles.size() == 0) {
                         if (packages.size() == 0) {
-                            System.out.println("Error: No packages available.");
+                            System.out.println("Error: No packages available.\n");
                         } else {
-                            System.out.println("Error: No vehicles available.");
+                            System.out.println("Error: No vehicles available.\n");
                         }
                     } else { //Vehicles Available
                         boolean flag3 = true;
                         int input3;
                         while (flag3) {
-                            System.out.println("Options:\n" +
+                            System.out.println("\nOptions:\n" +
                                     "1) Send Truck\n" +
                                     "2) Send Drone\n" +
                                     "3) Send Cargo Plane\n" +
@@ -227,9 +245,9 @@ public class Warehouse {
                                         }
                                     }
                                     if (count == 0) {
-                                        System.out.println("Error: No vehicles of selected type is available.");
+                                        System.out.println("Error: No vehicles of selected type is available.\n");
                                     } else {
-                                        System.out.println("Zip Code Options:\n" +
+                                        System.out.println("\nZip Code Options:\n" +
                                                 "1) Send to first ZIP Code\n" +
                                                 "2) Send to mode of ZIP Codes");
                                         int input4;
@@ -247,8 +265,8 @@ public class Warehouse {
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -279,12 +297,13 @@ public class Warehouse {
                                                     vehicles.get(i).setZipDest(zip);
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
+                                                    nPackages += vehicles.get(i).getPackages().size();
                                                     profit += vehicles.get(i).getProfit();
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -300,9 +319,9 @@ public class Warehouse {
                                         }
                                     }
                                     if (count == 0) {
-                                        System.out.println("Error: No vehicles of selected type is available.");
+                                        System.out.println("Error: No vehicles of selected type is available.\n");
                                     } else {
-                                        System.out.println("Zip Code Options:\n" +
+                                        System.out.println("\nZip Code Options:\n" +
                                                 "1) Send to first ZIP Code\n" +
                                                 "2) Send to mode of ZIP Codes");
                                         int input4;
@@ -315,12 +334,13 @@ public class Warehouse {
                                                             .getZipCode());
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
+                                                    nPackages += vehicles.get(i).getPackages().size();
                                                     profit += vehicles.get(i).getProfit();
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -351,12 +371,13 @@ public class Warehouse {
                                                     vehicles.get(i).setZipDest(zip);
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
+                                                    nPackages += vehicles.get(i).getPackages().size();
                                                     profit += vehicles.get(i).getProfit();
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -372,9 +393,9 @@ public class Warehouse {
                                         }
                                     }
                                     if (count == 0) {
-                                        System.out.println("Error: No vehicles of selected type is available.");
+                                        System.out.println("Error: No vehicles of selected type is available.\n");
                                     } else {
-                                        System.out.println("Zip Code Options:\n" +
+                                        System.out.println("\nZip Code Options:\n" +
                                                 "1) Send to first ZIP Code\n" +
                                                 "2) Send to mode of ZIP Codes");
                                         int input4;
@@ -387,12 +408,13 @@ public class Warehouse {
                                                             .getZipCode());
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
+                                                    nPackages += vehicles.get(i).getPackages().size();
                                                     profit += vehicles.get(i).getProfit();
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -423,12 +445,13 @@ public class Warehouse {
                                                     vehicles.get(i).setZipDest(zip);
                                                     vehicles.get(i).fill(packages);
                                                     System.out.println(vehicles.get(i).report());
+                                                    nPackages += vehicles.get(i).getPackages().size();
                                                     profit += vehicles.get(i).getProfit();
                                                     for (int j = 0; j < vehicles.get(i).getPackages().size(); j++) {
                                                         packages.remove(vehicles.get(i).getPackages().get(j));
                                                     }
+                                                    packagesWarehouse -= vehicles.get(i).getPackages().size();
                                                     vehicles.remove(vehicles.get(i));
-                                                    packagesWarehouse--;
                                                     flag3 = false;
                                                     i = vehicles.size(); //breaks out of for loop
                                                 }
@@ -438,9 +461,9 @@ public class Warehouse {
                                     //Selects First Available
                                 } else if (input3 == 4) {
                                     if (vehicles.size() == 0) {
-                                        System.out.println("Error: No vehicles of selected type is available.");
+                                        System.out.println("Error: No vehicles of selected type is available.\n");
                                     } else {
-                                        System.out.println("Zip Code Options:\n" +
+                                        System.out.println("\nZip Code Options:\n" +
                                                 "1) Send to first ZIP Code\n" +
                                                 "2) Send to mode of ZIP Codes");
                                         int input4;
@@ -450,12 +473,13 @@ public class Warehouse {
                                             vehicles.get(0).setZipDest(packages.get(0).getDestination().getZipCode());
                                             vehicles.get(0).fill(packages);
                                             System.out.println(vehicles.get(0).report());
+                                            nPackages += vehicles.get(0).getPackages().size();
                                             profit += vehicles.get(0).getProfit();
                                             for (int j = 0; j < vehicles.get(0).getPackages().size(); j++) {
                                                 packages.remove(vehicles.get(0).getPackages().get(j));
                                             }
+                                            packagesWarehouse -= vehicles.get(0).getPackages().size();
                                             vehicles.remove(vehicles.get(0));
-                                            packagesWarehouse--;
                                             flag3 = false;
                                             //Selects Mode ZipCode
                                         } else if (input4 == 2) {
@@ -481,12 +505,13 @@ public class Warehouse {
                                             vehicles.get(0).setZipDest(zip);
                                             vehicles.get(0).fill(packages);
                                             System.out.println(vehicles.get(0).report());
+                                            nPackages += vehicles.get(0).getPackages().size();
                                             profit += vehicles.get(0).getProfit();
                                             for (int j = 0; j < vehicles.get(0).getPackages().size(); j++) {
                                                 packages.remove(vehicles.get(0).getPackages().get(j));
                                             }
+                                            packagesWarehouse -= vehicles.get(0).getPackages().size();
                                             vehicles.remove(vehicles.get(0));
-                                            packagesWarehouse--;
                                             flag3 = false;
                                         } //End Zip
                                     } // Ends Option 4
@@ -502,7 +527,11 @@ public class Warehouse {
 //                            "Packages Shipped: %13d\n" +
 //                            "Packages in Warehouse: %8d\n" +
 //                            "==============================\n", '$', profit, nPackages, packagesWarehouse);
+                    System.out.println();
                     printStatisticsReport(profit, nPackages, packagesWarehouse);
+                    System.out.println();
+                    space = true;
+
                     break;
                 case 6:
                     DatabaseManager.saveVehicles(VEHICLE_FILE, vehicles);
@@ -523,11 +552,24 @@ public class Warehouse {
     }
 
     public static void printStatisticsReport(double profit, int packagesShipped, int size) {
-        System.out.printf("==========Statistics===========\n" +
-                "Profits: $%16c%.2f\n" +
-                "Packages Shipped: %13d\n" +
-                "Packages in Warehouse: %8d\n" +
-                "==============================\n", '$', profit, packagesShipped, size);
+        NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
+        if (profit < 0) {
+            System.out.printf("==========Statistics==========\n" +
+                    "Profits: %24s%c\n" +
+                    "Packages Shipped: %16d\n" +
+                    "Packages in Warehouse: %11d\n" +
+                    "==============================\n", "(" +
+                    (numberFormatter.format(Math.abs(profit))),
+                    ')', packagesShipped, size);
+        } else {
+            System.out.printf("==========Statistics==========\n" +
+                    "Profits: %25s\n" +
+                    "Packages Shipped: %16d\n" +
+                    "Packages in Warehouse: %11d\n" +
+                    "==============================\n",
+                    (numberFormatter.format(profit)),
+                    packagesShipped, size);
+        }
     }
 
 

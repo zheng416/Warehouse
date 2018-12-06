@@ -18,7 +18,7 @@ public class Drone extends Vehicle {
 //    private double currentWeight;
 //    private int zipDest;
 //    private ArrayList<Package> packages;
-    private int range = 1;
+    private int range = 0;
 
     /**
      * Default Contructor
@@ -57,12 +57,15 @@ public class Drone extends Vehicle {
      */
     @Override
     public double getProfit() {
-        NumberFormat numberFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
         double p = 0;
         for (int i = 0; i < getPackages().size(); i++) {
             p += getPackages().get(i).getPrice();
         }
-        return Double.parseDouble(numberFormatter.format(p - (gasRate * range)));
+        double profit = p - (gasRate * getRange());
+
+        String profitText = String.format("%.2f", profit);
+//        return Double.parseDouble(numberFormatter.format( p - (gasRate * getRange())));
+        return Double.parseDouble(profitText);
     }
 
     /**
@@ -79,37 +82,38 @@ public class Drone extends Vehicle {
      */
     @Override
     public String report() {
+        NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
         if (getProfit() < 0) {
             return "==========Drone Report==========\n" +
                     "License Plate No.: " + getLicensePlate() + "\n" +
                     "Destination: " + getZipDest() + "\n" +
                     "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                    "Net Profit: ($" + getProfit() + ")\n" +
-                    "==============================" + "\n" + super.report();
+                    "Net Profit: (" + numberFormatter.format(Math.abs(getProfit())) + ")" + "\n" + super.report() +
+                    "==============================";
         } else {
             return "==========Drone Report==========\n" +
                     "License Plate No.: " + getLicensePlate() + "\n" +
                     "Destination: " + getZipDest() + "\n" +
                     "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                    "Net Profit: $" + getProfit() + "\n" +
-                    "==============================" + "\n" + super.report();
+                    "Net Profit: " + numberFormatter.format(getProfit()) + "\n" + super.report() +
+                    "==============================";
         }
     }
 
-    /**
-     *
-     * @param warehousePackages List of packages to add from
-     */
-    public void fill(ArrayList<Package> warehousePackages) {
-        for (int i = 0; i < warehousePackages.size(); i++) {
-            if (warehousePackages.get(i).distance(getZipDest()) <= range) {
-                if (addPackage(warehousePackages.get(i))) {
-                    range++;
-                }
-            }
-        }
-
-    }
+//    /**
+//     *
+//     * @param warehousePackages List of packages to add from
+//     */
+//    public void fill(ArrayList<Package> warehousePackages) {
+//        for (int i = 0; i < warehousePackages.size(); i++) {
+//            while (warehousePackages.get(i).distance(getZipDest()) <= range) {
+//                if (addPackage(warehousePackages.get(i))) {
+//                    range++;
+//                }
+//            }
+//        }
+//
+//    }
 
 
 }

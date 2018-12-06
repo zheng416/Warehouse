@@ -17,7 +17,7 @@ public class CargoPlane extends Vehicle {
 //    private double currentWeight;
 //    private int zipDest;
 //    private ArrayList<Package> packages;
-    private int range = 10;
+    private int range = 0;
 
     /**
      * Default Constructor
@@ -50,11 +50,31 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public void fill(ArrayList<Package> warehousePackages) {
-        for (int i = 0; i < warehousePackages.size(); i++) {
-            if (warehousePackages.get(i).distance(getZipDest()) <= range) {
-                if (addPackage(warehousePackages.get(i))) {
-                    range += 10;
+        int count = 0;
+
+        boolean flag = true;
+        while (flag) {
+            for (int j = 0; j < warehousePackages.size() ; j++) {
+                if (warehousePackages.get(j).distance(getZipDest()) ==
+                        range && warehousePackages.get(j).getWeight() +
+                        getCurrentWeight() <= getMaxWeight()) {
+                    if (addPackage(warehousePackages.get(j))) {
+                        count++;
+                    }
                 }
+            }
+            int moreCount = 0;
+            for (int i = 0; i < warehousePackages.size() ; i++) {
+                if (warehousePackages.get(i).distance(getZipDest()) > range &&
+                        warehousePackages.get(i).getWeight() <= getMaxWeight() - getCurrentWeight()) {
+                    moreCount++;
+                }
+            }
+
+            if (count == warehousePackages.size() || moreCount == 0) {
+                flag = false;
+            } else if (moreCount > 0) {
+                range++;
             }
         }
 
@@ -74,12 +94,23 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public double getProfit() {
-        NumberFormat numberFormatter = NumberFormat.getNumberInstance(Locale.ENGLISH);
         double p = 0;
         for (int i = 0; i < getPackages().size(); i++) {
             p += getPackages().get(i).getPrice();
         }
-        return Double.parseDouble(numberFormatter.format(p - (gasRate * range)));
+        double profit;
+        if ((range % 10) == 0) {
+            profit = p - (gasRate * (range));
+        } else {
+            profit = p - (gasRate * (range - (range % 10) + 10));
+        }
+//        System.out.println(p);
+//        System.out.println(profit);
+//        System.out.println(range);
+
+        //System.out.println(profit);
+        //String profitText = String.format("%.2f", profit);
+        return profit;
     }
 
     /**
@@ -96,20 +127,24 @@ public class CargoPlane extends Vehicle {
      */
     @Override
     public String report() {
+        NumberFormat numberFormatter = NumberFormat.getCurrencyInstance();
+        //String profitText = String.format("%.2f", getProfit());
+
         if (getProfit() < 0) {
             return "==========Cargo Plane Report==========\n" +
                     "License Plate No.: " + getLicensePlate() + "\n" +
                     "Destination: " + getZipDest() + "\n" +
                     "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                    "Net Profit: ($" + getProfit() + ")\n" +
-                    "==============================" + "\n" + super.report();
+                    "Net Profit: (" + numberFormatter.format(Math.abs(getProfit())) +
+                    ")" + "\n" + super.report() +
+                    "==============================";
         } else {
             return "==========Cargo Plane Report==========\n" +
                     "License Plate No.: " + getLicensePlate() + "\n" +
                     "Destination: " + getZipDest() + "\n" +
                     "Weight Load: " + getCurrentWeight() + "/" + getMaxWeight() + "\n" +
-                    "Net Profit: $" + getProfit() + "\n" +
-                    "==============================" + "\n" + super.report();
+                    "Net Profit: " + numberFormatter.format(getProfit()) + "\n" + super.report() +
+                    "==============================";
         }
     }
 

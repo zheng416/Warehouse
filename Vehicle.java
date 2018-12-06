@@ -17,7 +17,7 @@ public class Vehicle implements Profitable {
     private double currentWeight;
     private int zipDest;
     private ArrayList<Package> packages;
-    private int range;
+    private int range = 0;
 
 
     /**
@@ -139,7 +139,7 @@ public class Vehicle implements Profitable {
      * @return whether or not it was successful in adding the package
      */
     public boolean addPackage(Package pkg) {
-        if (!isFull() & pkg.getWeight() <= maxWeight - currentWeight) {
+        if (!isFull() && (pkg.getWeight() <= maxWeight - currentWeight)) {
             this.packages.add(pkg);
             this.currentWeight += pkg.getWeight();
             return true;
@@ -195,10 +195,47 @@ public class Vehicle implements Profitable {
             addPackage(warehousePackages.get(i));
         }
         */
-        for (int i = 0; i < warehousePackages.size(); i++) {
-            if (warehousePackages.get(i).distance(zipDest) <= range) {
+//        for (int i = 0; i < warehousePackages.size(); i++) {
+//            if (warehousePackages.get(i).distance(zipDest) <= range) {
+//                range++;
+//                addPackage(warehousePackages.get(i));
+//            }
+//        }
+
+//        int min = warehousePackages.get(0).distance(getZipDest());
+//        int max = warehousePackages.get(0).distance(getZipDest());
+//        for (int i = 0; i < warehousePackages.size(); i++) {
+//            if (warehousePackages.get(i).distance(getZipDest()) > max) {
+//                max = warehousePackages.get(i).distance(getZipDest());
+//            } else if (warehousePackages.get(i).distance(getZipDest()) < min) {
+//                min = warehousePackages.get(i).distance(getZipDest());
+//            }
+//        }
+        int count = 0;
+
+        boolean flag = true;
+        while (flag) {
+            for (int j = 0; j < warehousePackages.size() ; j++) {
+                if (warehousePackages.get(j).distance(getZipDest()) ==
+                        range && warehousePackages.get(j).getWeight() +
+                        getCurrentWeight() <= getMaxWeight()) {
+                    if (addPackage(warehousePackages.get(j))) {
+                        count++;
+                    }
+                }
+            }
+            int moreCount = 0;
+            for (int i = 0; i < warehousePackages.size() ; i++) {
+                if (warehousePackages.get(i).distance(getZipDest()) != range &&
+                        warehousePackages.get(i).getWeight() <= maxWeight - currentWeight) {
+                    moreCount++;
+                }
+            }
+
+            if (count == warehousePackages.size() || moreCount == 0) {
+                flag = false;
+            } else if (moreCount > 0) {
                 range++;
-                addPackage(warehousePackages.get(i));
             }
         }
 
@@ -207,7 +244,11 @@ public class Vehicle implements Profitable {
 
     @Override
     public double getProfit() {
-        return 0;
+        double profit = 0;
+        for (int i = 0; i < packages.size() ; i++) {
+            profit += packages.get(i).getPrice();
+        }
+        return profit;
     }
 
     @Override
@@ -228,4 +269,13 @@ public class Vehicle implements Profitable {
 //            return 0;
 //        }
 //    }
+
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
 }
