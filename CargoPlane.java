@@ -99,15 +99,16 @@ public class CargoPlane extends Vehicle {
             p += getPackages().get(i).getPrice();
         }
         double profit;
-        if ((range % 10) == 0) {
-            profit = p - (gasRate * (range));
-        } else {
-            profit = p - (gasRate * (range - (range % 10) + 10));
-        }
+        //As of now, Vocareum doesn't want us to increment to ceiling(10).
+//        if ((range % 10) == 0) {
+//            profit = p - (gasRate * (range));
+//        } else {
+//            profit = p - (gasRate * (range - (range % 10) + 10));
+//        }
 //        System.out.println(p);
 //        System.out.println(profit);
 //        System.out.println(range);
-
+        profit = p - (gasRate * range);
         //System.out.println(profit);
         //String profitText = String.format("%.2f", profit);
         return profit;
