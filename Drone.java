@@ -78,7 +78,7 @@ public class Drone extends Vehicle {
      * <li>Shipping labels of all packages in truck</li>
      * </ul>
      *
-     * @return Truck Report
+     * @return Drone Report
      */
     @Override
     public String report() {
