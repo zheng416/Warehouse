@@ -63,9 +63,9 @@ public class Drone extends Vehicle {
         }
         double profit = p - (gasRate * getRange());
 
-        String profitText = String.format("%.2f", profit);
+        //String profitText = String.format("%.2f", profit);
 //        return Double.parseDouble(numberFormatter.format( p - (gasRate * getRange())));
-        return Double.parseDouble(profitText);
+        return profit;
     }
 
     /**
